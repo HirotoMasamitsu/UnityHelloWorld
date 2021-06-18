@@ -37,7 +37,7 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         //Output to console the GameObject's name and the following message
-        Debug.Log("Cursor Entering " + gameObject.name + " GameObject");
+        Debug.Log("Cursor Entering " + gameObject.name);
         if (this.eventDic.ContainsKey(gameObject.name))
         {
             this.eventDic[gameObject.name].Entered();
@@ -48,7 +48,7 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         //Output the following message with the GameObject's name
-        Debug.Log("Cursor Exiting " + gameObject.name + " GameObject");
+        Debug.Log("Cursor Exiting " + gameObject.name);
         if (this.eventDic.ContainsKey(gameObject.name))
         {
             this.eventDic[gameObject.name].Exited();
