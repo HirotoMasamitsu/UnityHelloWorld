@@ -14,6 +14,7 @@ public class TextMouseEvent : IMouseEvent
         this.text = GameObject.Find(gameObject.name).GetComponent<Text>();
         Debug.Log("TextMouseEvent Create:" + this.Name);
         fortune = new FortuneMessage();
+        VideoPokerGame.SetText(this.text);
     }
 
     public string Name { get; private set; }
@@ -21,19 +22,19 @@ public class TextMouseEvent : IMouseEvent
     public void Clicked()
     {
         Debug.Log("TextMouseEvent Clicked:" + this.Name);
-        this.text.text = this.fortune.GetMessage();
+        //this.text.text = this.fortune.GetMessage();
     }
 
     public void Entered()
     {
         Debug.Log("TextMouseEvent Entered:" + this.Name);
-        this.text.text = "Hello World!";
+        //this.text.text = "Hello World!";
     }
 
     public void Exited()
     {
         Debug.Log("TextMouseEvent Exit:" + this.Name);
-        this.text.text = "Good bye!";
+        //this.text.text = "Good bye!";
     }
 
 }

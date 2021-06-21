@@ -15,8 +15,16 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
         this.eventDic = new Dictionary<string, IMouseEvent>();
         var textMouseEvent = new TextMouseEvent(GameObject.Find("Text"));
         this.eventDic.Add(textMouseEvent.Name, textMouseEvent);
-        var cardMouseEvent = new CardMouseEvent(GameObject.Find("CardSprite"));
+        var cardMouseEvent = new CardMouseEvent(GameObject.Find("CardSprite"), 0);
         this.eventDic.Add(cardMouseEvent.Name, cardMouseEvent);
+        for (var i = 1; i <= 4; i++)
+        {
+            Debug.Log("FindName: " + (string.Format("CardSprite({0})", i)));
+            var cardMouseEventI = new CardMouseEvent(GameObject.Find(string.Format("CardSprite ({0})", i)), i);
+            Debug.Log("Find " + cardMouseEventI.Name);
+            this.eventDic.Add(cardMouseEventI.Name, cardMouseEventI);
+            
+        }
     }
 
     // Update is called once per frame
