@@ -6,25 +6,29 @@ using UnityEngine.EventSystems;
 
 public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    private Dictionary<string, IMouseEvent> eventDic;
+    //private Dictionary<string, IMouseEvent> eventDic;
+    private IMouseEvent mouseEvent;
 
     // Start is called before the first frame update
     void Start()
     {
+
         Debug.Log("EventSystemClickCheckBehavior Start()");
-        this.eventDic = new Dictionary<string, IMouseEvent>();
-        var textMouseEvent = new TextMouseEvent(GameObject.Find("Text"));
-        this.eventDic.Add(textMouseEvent.Name, textMouseEvent);
-        var cardMouseEvent = new CardMouseEvent(GameObject.Find("CardSprite"), 0);
-        this.eventDic.Add(cardMouseEvent.Name, cardMouseEvent);
-        for (var i = 1; i <= 4; i++)
+        var text = GameObject.Find(gameObject.name).GetComponent<Text>();
+        var renderer = GameObject.Find(gameObject.name).GetComponent<SpriteRenderer>();
+        if (text != null)
         {
-            Debug.Log("FindName: " + (string.Format("CardSprite({0})", i)));
-            var cardMouseEventI = new CardMouseEvent(GameObject.Find(string.Format("CardSprite ({0})", i)), i);
-            Debug.Log("Find " + cardMouseEventI.Name);
-            this.eventDic.Add(cardMouseEventI.Name, cardMouseEventI);
-            
+            var textMouseEvent = new TextMouseEvent(gameObject);
+            this.mouseEvent = textMouseEvent;
         }
+        else if (renderer != null)
+        {
+            var cardMouseEvent = new CardMouseEvent(gameObject);
+            this.mouseEvent = cardMouseEvent;
+            VideoPokerGame.SetCardEvent(cardMouseEvent);
+        }
+
+        Debug.Log("EventSystemClickCheckBehavior Start() End");
     }
 
     // Update is called once per frame
@@ -36,20 +40,14 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData pointerData)
     {
         Debug.Log(gameObject.name + " Clicked!");
-        if (this.eventDic.ContainsKey(gameObject.name))
-        {
-            this.eventDic[gameObject.name].Clicked();
-        }
+        this.mouseEvent.Clicked();
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         //Output to console the GameObject's name and the following message
         Debug.Log("Cursor Entering " + gameObject.name);
-        if (this.eventDic.ContainsKey(gameObject.name))
-        {
-            this.eventDic[gameObject.name].Entered();
-        }
+        this.mouseEvent.Entered();
     }
 
     //Detect when Cursor leaves the GameObject
@@ -57,9 +55,6 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     {
         //Output the following message with the GameObject's name
         Debug.Log("Cursor Exiting " + gameObject.name);
-        if (this.eventDic.ContainsKey(gameObject.name))
-        {
-            this.eventDic[gameObject.name].Exited();
-        }
+        this.mouseEvent.Exited();
     }
 }

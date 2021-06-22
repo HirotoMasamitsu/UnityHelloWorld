@@ -8,60 +8,63 @@ using TEMP;
 public class CardMouseEvent : IMouseEvent
 {
     private SpriteRenderer renderer;
-    private bool isFace;
-    private int no;
+    private Card card;
+    private Sprite faceSprite;
+    private Sprite backSprite;
 
-
-    public CardMouseEvent(GameObject gameObject, int no, bool isFace = true)
+    public CardMouseEvent(GameObject gameObject, bool isFace = true)
     {
         this.Name = gameObject.name;
         this.renderer = GameObject.Find(gameObject.name).GetComponent<SpriteRenderer>();
-        this.isFace = isFace;
-        this.no = no;
-        Debug.Log(string.Format("CardMouseEvent Create: {0}({1})", this.Name, this.no));
+        this.IsFace = isFace;
+        this.backSprite = Resources.Load<Sprite>(Path.Combine("Playing Cards", "Image", "PlayingCards", "BackColor_Blue"));
+        Debug.Log(string.Format("CardMouseEvent Create: {0}", this.Name));
     }
 
     public string Name { get; private set; }
+    public bool IsFace { get; private set; }
 
     public void Clicked()
     {
-        Debug.Log("CardMouseEvent Clicked:" + this.Name);
         // クリックされたらカードを反転する
-        this.isFace = !this.isFace;
-        if (this.isFace)
-        {
-            //var sprite = Resources.Load<Sprite>(Path.Combine("Playing Cards", "Image", "PlayingCards", "Joker_Color"));
-            // ランダムにカードのガラを決める
-            //var v = this.rand.Next(0, 54);
-            //Card card;
-            //if (v < 52)
-            //{
-            //    card = new Card((v / 13) + 1, (v % 13) + 1);
-            //}
-            //else
-            //{
-            //    card = new Card(0, v - 51);
-            //}
-            //Debug.Log(string.Format("DrawCard: {0}({1})", card.ToString(), v));
-            var card = VideoPokerGame.Hands[this.no];
-            var sprite = Resources.Load<Sprite>(Path.Combine("Playing Cards", "Image", "PlayingCards", card.ToResourceString()));
-            this.renderer.sprite = sprite;
-        }
-        else
-        {
-            var sprite = Resources.Load<Sprite>(Path.Combine("Playing Cards", "Image", "PlayingCards", "BackColor_Blue"));
-            this.renderer.sprite = sprite;
-        }
+        this.IsFace = !this.IsFace;
+        Redraw();
     }
 
     public void Entered()
     {
-        Debug.Log("CardMouseEvent Entered:" + this.Name);
     }
 
     public void Exited()
     {
-        Debug.Log("CardMouseEvent Exit:" + this.Name);
     }
 
+
+    public void SetCard(Card card)
+    {
+        Debug.Log(string.Format("Set Card:{0}", card));
+        this.card = new Card(card.Suit, card.Number);
+        this.faceSprite = Resources.Load<Sprite>(Path.Combine("Playing Cards", "Image", "PlayingCards", this.card.ToResourceString()));
+        Redraw();
+        Debug.Log(string.Format("SetCard Completed card:{0}", this.card));
+    }
+
+    public void SetFace(bool isFace)
+    {
+        Debug.Log(string.Format("SetFace card:{0} faceSprite:{1}", this.card, this.faceSprite));
+        this.IsFace = isFace;
+        Redraw();
+    }
+
+    private void Redraw()
+    {
+        if (this.IsFace)
+        {
+            this.renderer.sprite = faceSprite;
+        }
+        else
+        {
+            this.renderer.sprite = backSprite;
+        }
+    }
 }

@@ -24,10 +24,21 @@ public class ButtonBehaviourScript : MonoBehaviour
         var t = gameObject.transform.Find("Text");
         if (t != null)
         {
-            t.GetComponent<Text>().text = "Button Clicked!!";
+            if (VideoPokerGame.Mode != 1)
+            {
+                VideoPokerGame.Reset();
+                t.GetComponent<Text>().text = "Hand Change";
+            } 
+            else
+            {
+                VideoPokerGame.Change();
+                t.GetComponent<Text>().text = "Retry";
+            }
         } 
         else
         {
         }
     }
+
+    //publi
 }
