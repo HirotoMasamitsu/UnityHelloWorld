@@ -14,9 +14,8 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     {
 
         Debug.Log("EventSystemClickCheckBehavior Start()");
-        var text = GameObject.Find(gameObject.name).GetComponent<Text>();
         var renderer = GameObject.Find(gameObject.name).GetComponent<SpriteRenderer>();
-        if (text != null)
+        if (gameObject.name == "ResultText")
         {
             var textMouseEvent = new TextMouseEvent(gameObject);
             this.mouseEvent = textMouseEvent;
