@@ -238,5 +238,50 @@ namespace TEMP
         }
 
         #endregion
+
+        /// <summary>
+        /// 逆順ソート用CompareTo
+        /// </summary>
+        /// <param name="other">Cardクラスのインスタンス</param>
+        /// <returns>比較対象より前：マイナス、後：プラス</returns>
+        public int ReverseCompareTo(Card other)
+        {
+            if (this.Suit == Suit.Joker)
+            {
+                // ジョーカーなら先頭に持ってくる
+                return -1;
+            }
+            else
+            {
+                // 番号でコンペアする
+                int numCompare = 0;
+                if (this.numberCount == other.numberCount)
+                {
+                    numCompare = 0;
+                } 
+                else if (this.numberCount == 1)
+                {
+                    numCompare = -1;
+                } 
+                else if (other.numberCount == 1)
+                {
+                    numCompare = 1;
+                } 
+                else
+                {
+                    numCompare = other.numberCount.CompareTo(this.numberCount);
+                }
+                if (numCompare != 0)
+                {
+                    return numCompare;
+                }
+                else
+                {
+                    // 番号が同じならスートで比較
+                    return this.suitCount.CompareTo(other.suitCount);
+                }
+            }
+        }
+
     }
 }

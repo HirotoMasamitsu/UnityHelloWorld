@@ -20,6 +20,10 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
             var textMouseEvent = new TextMouseEvent(gameObject);
             this.mouseEvent = textMouseEvent;
         }
+        else if (gameObject.name == "ScoreText")
+        {
+            VideoPokerGame.SetScoreText(gameObject.GetComponent<Text>());
+        }
         else if (renderer != null)
         {
             var cardMouseEvent = new CardMouseEvent(gameObject);
@@ -39,14 +43,20 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData pointerData)
     {
         Debug.Log(gameObject.name + " Clicked!");
-        this.mouseEvent.Clicked();
+        if (this.mouseEvent != null)
+        {
+            this.mouseEvent.Clicked();
+        }
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
         //Output to console the GameObject's name and the following message
         Debug.Log("Cursor Entering " + gameObject.name);
-        this.mouseEvent.Entered();
+        if (this.mouseEvent != null)
+        {
+            this.mouseEvent.Entered();
+        }
     }
 
     //Detect when Cursor leaves the GameObject
@@ -54,6 +64,9 @@ public class EventSystemClickCheckBehavior : MonoBehaviour, IPointerClickHandler
     {
         //Output the following message with the GameObject's name
         Debug.Log("Cursor Exiting " + gameObject.name);
-        this.mouseEvent.Exited();
+        if (this.mouseEvent != null)
+        {
+            this.mouseEvent.Exited();
+        }
     }
 }
