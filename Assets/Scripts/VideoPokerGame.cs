@@ -11,10 +11,12 @@ public static class VideoPokerGame
     private static Deck deck;
     private static Odds odds = new Odds(true);
     private static int score = 0;
+    private static DataAnalyze dataAnalyse = new DataAnalyze(true);
 
     private static Text text;
     private static Text scoreText;
     private static Text oddsText;
+    private static Text dataText;
     private static List<CardMouseEvent> cardEventList = new List<CardMouseEvent>();
 
     public static Card[] Hands { get; private set; }
@@ -31,6 +33,11 @@ public static class VideoPokerGame
     public static void SetScoreText(Text textUI)
     {
         scoreText = textUI;
+    }
+
+    public static void SetDataText(Text textUI)
+    {
+        dataText = textUI;
     }
 
     public static void SetOddsText(Text textUI)
@@ -57,6 +64,8 @@ public static class VideoPokerGame
 
     public static void Reset()
     {
+        dataAnalyse.Load();
+        dataText.text = dataAnalyse.ToString();
         Mode = 0;
         score -= 1;
         if (scoreText != null)
@@ -139,6 +148,10 @@ public static class VideoPokerGame
         {
             Debug.Log(string.Format("Hand{0}:{1}", i, Hands[i].ToString()));
         }
+
+        dataAnalyse.Update(score, checkHands);
+        dataAnalyse.Save();
+        dataText.text = dataAnalyse.ToString();
 
         Mode = 2;
     }

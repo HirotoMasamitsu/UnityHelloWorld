@@ -121,6 +121,14 @@ namespace TEMP
             }
             return sb.ToString();
         }
+
+        public bool IsJacksOrBetter
+        {
+            get
+            {
+                return (this.Rank == PKHands.OnePair && this.NumCount != null && this.NumCount.Length > 0 && (this.NumCount[0] == 1 || this.NumCount[0] >= 11));
+            }
+        }
     }
 
     /// <summary>
